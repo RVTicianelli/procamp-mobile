@@ -1,0 +1,7 @@
+{
+  "name": "procamp-mobile",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
