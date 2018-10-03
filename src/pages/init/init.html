@@ -12,8 +12,8 @@
   <ion-list>
     <button ion-item *ngFor="let campanha of campanhas">
       <h2>{{ campanha.nome }}</h2>
-      <label>{{ campanha.tipoCampanha.descricao }}</label>
-      <h4>Vigência: {{campanha.dataInicio}}  -  {{campanha.dataFim}}</h4>
+      <label>Tipo: {{ campanha.tipoCampanha.descricao }}</label>
+      <h4>Vigência: {{campanha.dataInicio}}  à  {{campanha.dataFim}}</h4>
     </button>
   </ion-list>
 </ion-content>
