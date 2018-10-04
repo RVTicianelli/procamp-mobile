@@ -19,9 +19,7 @@ export class InitPage {
     this.campanhaService.findAll().subscribe(response => {
       this.campanhas = response;
     },
-    error => {
-      console.log(error);
-    });
+    error => {});
   }
 
 }

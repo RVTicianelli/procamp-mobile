@@ -8,6 +8,7 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { CampanhaService } from '../services/domain/campanha.service';
+import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { CampanhaService } from '../services/domain/campanha.service';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    CampanhaService
+    CampanhaService,
+    ErrorInterceptorProvider
   ]
 })
 export class AppModule {}
