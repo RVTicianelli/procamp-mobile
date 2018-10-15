@@ -22,7 +22,7 @@ export class AuthService {
             });
     }
 
-    successfullLogin(authorizationValue : string) {
+    successfulLogin(authorizationValue : string) {
         let token = authorizationValue.substring(7);
         let user : LocalUser = {
             token: token
