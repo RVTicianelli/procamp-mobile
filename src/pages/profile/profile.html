@@ -1,0 +1,19 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+        <ion-icon name='menu'></ion-icon>
+      </button>
+    <ion-title>Profile</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <h2 text-center>{{usuario?.nome}}</h2>
+  <p text-center>{{usuario?.email}}</p>
+  <p text-center>{{usuario?.sexo}}</p>
+  <p text-center>{{usuario?.dataNascimento}}</p>
+  <p text-center>{{usuario?.cpf}}</p>
+</ion-content>
