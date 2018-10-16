@@ -2,12 +2,12 @@ import { Injectable } from "@angular/core";
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { Observable } from "rxjs/Rx";
 import { StorageService } from "../services/storage.service";
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
+import { AlertController } from "ionic-angular";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-    constructor(public storage: StorageService) {
+    constructor(public storage: StorageService, public alertController: AlertController) {
 
     }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -22,9 +22,14 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
 
             console.log("erro");
-            console.log(errorObj);
+            console.log(errorObj.status);
 
             switch(errorObj.status) {
+                case 401:
+                    console.log('entrou no case?');
+                    this.handle401();
+                    break;
+
                 case 403:
                     this.handle403();
                     break;
@@ -36,6 +41,18 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     handle403() {
         this.storage.setLocalUser(null);
+    }
+
+    handle401() {
+        let alert = this.alertController.create({
+            title: 'Erro 401: Falha de autenticação',
+            message: 'email ou senha incorretos',
+            enableBackdropDismiss: false,
+            buttons: [
+                {text: 'Ok'}
+            ]
+        })
+        alert.present();
     }
 }
 
