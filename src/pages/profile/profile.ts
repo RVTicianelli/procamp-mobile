@@ -21,10 +21,16 @@ export class ProfilePage {
     if (localUser && localUser.email) {
       this.usuarioService.findByEmail(localUser.email)
       .subscribe(response => {
-        console.log(response);
         this.usuario = response;
       },
-      error =>{});
+      error =>{
+        if(error.status == 403) {
+          this.navCtrl.setRoot('HomePage');
+        }
+      });
+    }
+    else {
+      this.navCtrl.setRoot('HomePage');
     }
     console.log('ionViewDidLoad ProfilePage');
   }
