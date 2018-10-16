@@ -1,0 +1,50 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Cadastrar</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form (ngSubmit)="signupUser(); $event.preventDefault()">
+    <ion-item>
+      <ion-label stacked>Nome*</ion-label>
+      <ion-input name="nome" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Data de nascimento*</ion-label>
+      <ion-input name="dtNascimento" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>CPF*</ion-label>
+      <ion-input name="cpf" type="text"></ion-input>
+    </ion-item>
+
+    <ion-list radio-group name="sexo">
+      <ion-list-header>
+        Sexo
+      </ion-list-header>
+      <ion-item>
+        <ion-label>M</ion-label>
+        <ion-radio checked="true" value="M"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>F</ion-label>
+        <ion-radio value="F"></ion-radio>
+      </ion-item>
+    </ion-list>
+
+    <ion-item>
+        <ion-label stacked>Email*</ion-label>
+        <ion-input name="email" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label stacked>Senha*</ion-label>
+        <ion-input name="senha" type="password"></ion-input>
+    </ion-item>
+    <button ion-button block type="submit">Cadastrar</button>
+  </form>
+
+</ion-content>
