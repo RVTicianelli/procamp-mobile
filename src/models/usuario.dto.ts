@@ -3,5 +3,7 @@ export interface UsuarioDTO {
 	dataNascimento: String;
 	cpf: String;
 	sexo: String;
-    email: String;
+	email: String;
+	preferencias: String[];
+	senha: String;
 }

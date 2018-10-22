@@ -22,7 +22,7 @@ export class HomePage {
   }
 
   entrarSemCadastro() {
-    console.log(this.creds);
+    this.navCtrl.setRoot('InitPage');
   }
 
   login() {

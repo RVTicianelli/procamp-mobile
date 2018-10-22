@@ -33,6 +33,10 @@ export class ErrorInterceptor implements HttpInterceptor {
                 case 403:
                     this.handle403();
                     break;
+
+                case 422:
+                    this.handle422();
+                    break;
             }
 
             return Observable.throw(errorObj);
@@ -51,7 +55,19 @@ export class ErrorInterceptor implements HttpInterceptor {
             buttons: [
                 {text: 'Ok'}
             ]
-        })
+        });
+        alert.present();
+    }
+
+    handle422() {
+        let alert = this.alertController.create({
+            title: 'Erro 422: Validação',
+            message: 'Dados errados, verificar o formulário',
+            enableBackdropDismiss: false,
+            buttons: [
+                {text: 'Ok'}
+            ]
+        });
         alert.present();
     }
 }

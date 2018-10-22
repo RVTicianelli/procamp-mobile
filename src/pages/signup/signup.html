@@ -8,21 +8,24 @@
 
 
 <ion-content padding>
-  <form (ngSubmit)="signupUser(); $event.preventDefault()">
+  <form [formGroup]="formGroup" (ngSubmit)="signupUser(); $event.preventDefault()">
     <ion-item>
       <ion-label stacked>Nome*</ion-label>
-      <ion-input name="nome" type="text"></ion-input>
+      <ion-input formControlName="nome" type="text"></ion-input>
     </ion-item>
+    <p class="danger" *ngIf="formGroup.controls['nome'].dirty && formGroup.controls['nome'].errors" margin-left>Valor inválido</p>
     <ion-item>
       <ion-label stacked>Data de nascimento*</ion-label>
-      <ion-input name="dtNascimento" type="text"></ion-input>
+      <ion-input formControlName="dtNascimento" type="text"></ion-input>
     </ion-item>
+    <p class="danger" *ngIf="formGroup.controls['dtNascimento'].dirty && formGroup.controls['dtNascimento'].errors" margin-left>Valor inválido</p>
     <ion-item>
       <ion-label stacked>CPF*</ion-label>
-      <ion-input name="cpf" type="text"></ion-input>
+      <ion-input formControlName="cpf" type="text"></ion-input>
     </ion-item>
+    <p class="danger" *ngIf="formGroup.controls['cpf'].dirty && formGroup.controls['cpf'].errors" margin-left>Valor inválido</p>
 
-    <ion-list radio-group name="sexo">
+    <ion-list radio-group formControlName="sexo">
       <ion-list-header>
         Sexo
       </ion-list-header>
@@ -38,13 +41,29 @@
 
     <ion-item>
         <ion-label stacked>Email*</ion-label>
-        <ion-input name="email" type="text"></ion-input>
+        <ion-input formControlName="email" type="text"></ion-input>
     </ion-item>
+    <p class="danger" *ngIf="formGroup.controls['email'].dirty && formGroup.controls['email'].errors" margin-left>Valor inválido</p>
     <ion-item>
         <ion-label stacked>Senha*</ion-label>
-        <ion-input name="senha" type="password"></ion-input>
+        <ion-input formControlName="senha" type="password"></ion-input>
     </ion-item>
-    <button ion-button block type="submit">Cadastrar</button>
+    <p class="danger" *ngIf="formGroup.controls['senha'].dirty && formGroup.controls['senha'].errors" margin-left>Valor inválido</p>
+    <ion-item>
+      <ion-label stacked>Preferencias*</ion-label>
+      <ion-select formControlName="preferenciaId">
+        <ion-option *ngFor="let preferencia of preferencias" [value]="preferencia.id">{{preferencia.nome}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <button ion-button block type="button" (click)='adicionarPreferencia()' >Adicionar Preferencia</button>
+    <ion-item>
+      <ion-list>
+        <button ion-item *ngFor="let item of preferenciasListaDesc"> {{ item }}
+        </button>  
+      </ion-list>    
+    </ion-item>
+
+    <button ion-button block type="submit" [disabled]="formGroup.invalid">Cadastrar</button>
   </form>
 
 </ion-content>
