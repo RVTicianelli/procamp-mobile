@@ -5,6 +5,9 @@ import { PreferenciasService } from '../../services/domain/preferencias.service'
 import { PreferenciasDTO } from '../../models/preferencias.dto';
 import { UsuarioService } from '../../services/domain/usuario.service';
 import { UsuarioDTO } from '../../models/usuario.dto';
+import { CredenciaisDTO } from '../../models/credenciais.dto';
+import { MyApp } from '../../app/app.component';
+import { AuthService } from '../../services/auth.service';
 
 @IonicPage()
 @Component({
@@ -19,8 +22,16 @@ export class SignupPage {
   usuario: UsuarioDTO;
   preferenciasListaId = [];
   preferenciasListaDesc = [];
+
+  creds : CredenciaisDTO = {
+    email: "",
+    senha: ""
+  }
   
-  constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, public preferenciasService: PreferenciasService, public usuarioService: UsuarioService, public alertCrtl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+              public formBuilder: FormBuilder, public preferenciasService: PreferenciasService, 
+              public usuarioService: UsuarioService, public alertCrtl: AlertController, 
+              public app: MyApp, public auth: AuthService) {
 
     this.formGroup = this.formBuilder.group({
       nome: ['nometeste', [Validators.required, Validators.minLength(5), Validators.maxLength(120)]],
@@ -40,7 +51,6 @@ export class SignupPage {
     this.preferenciasService.findAll()
     .subscribe(response => {
       this.preferencias=response;
-      //this.preferenciaId
       this.formGroup.controls.preferenciaId.setValue(this.preferencias[0].id);
     },
     error => {});
@@ -75,7 +85,13 @@ export class SignupPage {
         {
           text:'ok',
           handler: () => {
-            this.navCtrl.setRoot('InitPage');
+            this.auth.authenticate(this.creds)
+            .subscribe(response => {
+              console.log(response.headers.get('Authorization'));
+              this.auth.successfulLogin(response.headers.get('Authorization'));
+              this.app.getMenuOptions();
+              this.navCtrl.setRoot('InitPage');
+            })
           }
         }
       ]
@@ -83,14 +99,11 @@ export class SignupPage {
     alert.present();
   }
 
-  adicionarPreferencia(){
-    if (this.formGroup.value.preferenciaId in this.preferenciasListaId) {
-      console.log('ja tem');
-    }
-    else {
-      this.preferenciasListaId.push(this.formGroup.value.preferenciaId);
-      this.preferenciasListaDesc.push(this.preferencias[this.formGroup.value.preferenciaId-1].nome);
-      this.formGroup.value.preferencias =  this.preferenciasListaId;
+  async adicionarPreferencia(){
+    if(this.preferenciasListaId.indexOf(this.formGroup.value.preferenciaId["id"]) == -1 ) {
+      this.preferenciasListaId.push(this.formGroup.value.preferenciaId["id"]);
+      this.preferenciasListaDesc.push(this.formGroup.value.preferenciaId["nome"]);
+      this.formGroup.value.preferencias = this.preferenciasListaId;
     }
   }
 }
