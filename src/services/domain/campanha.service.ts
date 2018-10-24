@@ -13,4 +13,8 @@ export class CampanhaService {
     findAll() : Observable<CampanhaDTO[]> {
         return this.http.get<CampanhaDTO[]>(`${API_CONFIG.baseUrl}/campanha/buscacampanha`);
     }
+
+    findById(campanhaId) : Observable<CampanhaDTO> {
+        return this.http.get<CampanhaDTO>(`${API_CONFIG.baseUrl}/campanha/buscacampanha/${campanhaId}`);
+    }
 }

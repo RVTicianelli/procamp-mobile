@@ -4,6 +4,7 @@ import { IonicPage } from 'ionic-angular/navigation/ionic-page';
 import { MenuController } from 'ionic-angular/components/app/menu-controller';
 import { CredenciaisDTO } from '../../models/credenciais.dto';
 import { AuthService } from '../../services/auth.service';
+import { MyApp } from '../../app/app.component';
 
 @IonicPage()
 @Component({
@@ -17,11 +18,12 @@ export class HomePage {
     senha: ""
   }
 
-  constructor(public navCtrl: NavController, public menu: MenuController, public auth: AuthService) {
+  constructor(public navCtrl: NavController, public menu: MenuController, public auth: AuthService, public app:MyApp) {
 
   }
 
   entrarSemCadastro() {
+    this.app.getMenuOptions();
     this.navCtrl.setRoot('InitPage');
   }
 
@@ -30,6 +32,7 @@ export class HomePage {
       .subscribe(response => {
         console.log(response.headers.get('Authorization'));
         this.auth.successfulLogin(response.headers.get('Authorization'));
+        this.app.getMenuOptions();
         this.navCtrl.setRoot('InitPage');
       })
   }

@@ -22,4 +22,8 @@ export class InitPage {
     error => {});
   }
 
+  showCampanha(campanhaId : String){
+    this.navCtrl.push("CampanhaPage", {campanhaId: campanhaId});
+  }
+
 }

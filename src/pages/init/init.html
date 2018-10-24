@@ -10,7 +10,7 @@
 
 <ion-content padding>
   <ion-list>
-    <button ion-item *ngFor="let campanha of campanhas">
+    <button ion-item *ngFor="let campanha of campanhas" (click)="showCampanha(campanha.id)">
       <h2>{{ campanha.nome }}</h2>
       <label>Tipo: {{ campanha.tipoCampanha.descricao }}</label>
       <h4>Vigência: {{campanha.dataInicio}}  à  {{campanha.dataFim}}</h4>

@@ -1,0 +1,25 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Campanha</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+    <h2 text-center>{{campanha?.nome}}</h2>
+    <p text-left>Data de inicio: {{campanha?.dataInicio}}</p>
+    <p text-left>Data de término: {{campanha?.dataFim}}</p> 
+    <p text-left>Respnsável: {{campanha?.responsavel.nome}}</p> 
+    <p text-left>Tipo da campanha: {{campanha?.tipoCampanha.descricao}}</p>
+    <p text-left>Descricao: {{campanha?.descricao}}</p>
+    <p text-left>Localidades: </p>
+    <ion-item *ngFor="let loc of localidades">
+        <p>{{ loc["nome"]}}</p>    
+    </ion-item>
+    <p text-left>Preferencias: </p>
+    <ion-item *ngFor="let pref of preferencias">
+      <p>{{ pref["nome"]}}</p>    
+  </ion-item>
+
+</ion-content>
