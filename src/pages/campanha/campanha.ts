@@ -24,6 +24,14 @@ export class CampanhaPage {
       this.localidades = response.localidades;
       this.preferencias = response.preferencias;
 
+      let dtIni = response.dataInicio.split('-');
+      let dtIniForm = dtIni[2]+'/'+dtIni[1]+'/'+dtIni[0];
+      let dtFim = response.dataFim.split('-');
+      let dtFimForm = dtFim[2]+'/'+dtFim[1]+'/'+dtFim[0];
+
+      response.dataInicio = dtIniForm;
+      response.dataFim = dtFimForm;
+
       if(this.localidades.length == 0) {
         this.resp =[{
           nome:"--"
