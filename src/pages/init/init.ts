@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { CampanhaService } from '../../services/domain/campanha.service';
 import { CampanhaDTO } from '../../models/campanha';
 import { StorageService } from '../../services/storage.service';
@@ -18,7 +18,7 @@ export class InitPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
               public campanhaService: CampanhaService, public storage: StorageService,
-              public usuarioService: UsuarioService) {
+              public usuarioService: UsuarioService, public alertCrtl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -61,9 +61,38 @@ export class InitPage {
   }
 
   changeFilter(filter) {
+    if(filter == 'preferencias'){
+      let localUser = this.storage.getLocalUser();
+      if(localUser == null) {
+        let alert = this.alertCrtl.create({
+          title: 'Erro',
+          message: 'Você deve estar logado para usar esta opção.',
+          enableBackdropDismiss: false,
+          buttons: [
+            { text:'ok' }
+          ]
+        })
+        alert.present();
+        location.reload();
+      }
+      else{
+        this.updateCampanhas(filter, localUser.pref);
+      }
+    }
     console.log('mudou: ' + filter);
-    let localUser = this.storage.getLocalUser();
-    console.log(localUser.email);
+    //let localUser = this.storage.getLocalUser();
+    //console.log(localUser.email);
+  }
+
+  updateCampanhas(filter, prefs) {
+    if(filter == 'preferencias') {
+      this.campanhas = [];
+      this.campanhaService.findByPref(prefs[0]).subscribe(response => {
+        this.campanhas = response;        
+      },
+      error=>{});
+
+    }
   }
 
 }
