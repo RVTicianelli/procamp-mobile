@@ -30,7 +30,10 @@ export class AuthService {
         let user : LocalUser = {
             token: token,
             email: this.jwtHelper.decodeToken(token).sub,
-            pref: []
+            pref: [],
+            tpCamps: [],
+            ultimoLogin:"",
+            perfis:[]
         };
 
         this.storage.setLocalUser(user);

@@ -5,6 +5,7 @@ import { MenuController } from 'ionic-angular/components/app/menu-controller';
 import { CredenciaisDTO } from '../../models/credenciais.dto';
 import { AuthService } from '../../services/auth.service';
 import { MyApp } from '../../app/app.component';
+import { StorageService } from '../../services/storage.service';
 
 @IonicPage()
 @Component({
@@ -18,7 +19,7 @@ export class HomePage {
     senha: ""
   }
 
-  constructor(public navCtrl: NavController, public menu: MenuController, public auth: AuthService, public app:MyApp) {
+  constructor(public navCtrl: NavController, public menu: MenuController, public auth: AuthService, public app:MyApp, public storage: StorageService) {
 
   }
 
@@ -28,6 +29,9 @@ export class HomePage {
   }
 
   login() {
+    console.log(this.creds.senha);
+    this.storage.setPwd(this.creds.senha);
+    
     this.auth.authenticate(this.creds)
       .subscribe(response => {
         console.log(response.headers.get('Authorization'));

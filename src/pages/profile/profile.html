@@ -11,9 +11,62 @@
 
 
 <ion-content padding>
-  <h2 text-center>{{usuario?.nome}}</h2>
+ <!-- <h2 text-center>{{usuario?.nome}}</h2>
   <p text-center>{{usuario?.email}}</p>
   <p text-center>{{usuario?.sexo}}</p>
   <p text-center>{{usuario?.dataNascimento}}</p>
   <p text-center>{{usuario?.cpf}}</p>
+   <form [formGroup]="formGroup">-->
+    <ion-item>
+        <ion-label stacked>Nome*</ion-label>
+        <ion-input type="text" value="{{usuario?.nome}}" [(ngModel)] = "usuario.nome" ></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label stacked>Data de nascimento*</ion-label>
+        <ion-input type="text" value="{{usuario?.dataNascimento}}" [(ngModel)] = "usuario.dataNascimento"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label stacked>CPF*</ion-label>
+        <ion-input  type="text" value="{{usuario?.cpf}}" [(ngModel)] = "usuario.cpf"></ion-input>
+    </ion-item>
+
+
+    <ion-list radio-group [(ngModel)] = "usuario.sexo">
+        <ion-list-header>
+          Sexo
+        </ion-list-header>
+        <ion-item>
+          <ion-label>M</ion-label>
+          <ion-radio value="M"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>F</ion-label>
+          <ion-radio value="F"></ion-radio>
+        </ion-item>
+      </ion-list>
+
+
+    
+    <ion-item>
+        <ion-label stacked>Email*</ion-label>
+        <ion-input type="text" value="{{usuario?.email}}" [(ngModel)] = "usuario.email"></ion-input>
+      </ion-item>
+    <ion-item>
+        <ion-label stacked>Senha*</ion-label>
+        <ion-input type="password"></ion-input>
+    </ion-item>
+
+    <!--<ion-item>
+        <ion-list>
+          <button ion-item *ngFor="let item of {{usuario?.preferencias}}"> {{ item.nome }}
+          </button>  
+        </ion-list>    
+      </ion-item>-->
+
+      <button ion-button block type="button"  (click)='mostra()' >Salvar</button>
+
+
+      <button ion-button block type="button">Excluir</button>
+
+  <!--</form>-->
 </ion-content>

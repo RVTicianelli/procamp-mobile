@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ModuleWithComponentFactories } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { CampanhaService } from '../../services/domain/campanha.service';
 import { CampanhaDTO } from '../../models/campanha';
 import { StorageService } from '../../services/storage.service';
 import { UsuarioService } from '../../services/domain/usuario.service';
 import { LocalUser } from '../../models/local_user';
+import { UsuarioDTO } from '../../models/usuario.dto';
 
 @IonicPage()
 @Component({
@@ -15,6 +16,8 @@ export class InitPage {
 
   campanhas: CampanhaDTO[] = [];
   preferenciasUsu: string[] = [];
+  tipoCampanhasUsu: string[] = [];
+  dataAtual: string = new Date().toISOString().substring(0, 10);
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
               public campanhaService: CampanhaService, public storage: StorageService,
@@ -25,13 +28,8 @@ export class InitPage {
     this.campanhaService.findAll().subscribe(response => {
 
       for(let i = 0; i < response.length; i++){
-        let dtIni = response[i].dataInicio.split('-');
-        let dtIniForm = dtIni[2]+'/'+dtIni[1]+'/'+dtIni[0];
-        let dtFim = response[i].dataFim.split('-');
-        let dtFimForm = dtFim[2]+'/'+dtFim[1]+'/'+dtFim[0];
-
-        response[i].dataInicio = dtIniForm;
-        response[i].dataFim = dtFimForm;
+        response[i].dataInicio = this.formatData(response[i].dataInicio); 
+        response[i].dataFim = this.formatData(response[i].dataFim); 
 
         this.campanhas.push(response[i]);
       }
@@ -39,19 +37,46 @@ export class InitPage {
     error => {});
 
     let localUser = this.storage.getLocalUser();
+    let idUser;
     if(localUser != null) {
       this.usuarioService.findByEmail(localUser.email).subscribe(response =>{
         for(let i = 0; i < (response.preferencias.length); i++) {
+          idUser= response["id"];
           this.preferenciasUsu.push(response.preferencias[i]["id"]);
         }
+        for(let i = 0; i < (response.tipoCampanha.length); i++) {
+          this.tipoCampanhasUsu.push(response.tipoCampanha[i]["id"]);
+        }
+
         let user : LocalUser = {
           token: localUser.token,
           email: localUser.email,
-          pref: this.preferenciasUsu
-      };
+          pref: this.preferenciasUsu,
+          tpCamps: this.tipoCampanhasUsu,
+          ultimoLogin: response.ultimoLogin,
+          perfis: [2]
+        };
   
         this.storage.setLocalUser(user);
-        console.log(this.preferenciasUsu);
+
+        let usuarioUpdate: UsuarioDTO = {
+            nome: response.nome,
+            dataNascimento: response.dataNascimento,
+            cpf: response.cpf,
+            sexo: response.sexo,
+            email: response.email,
+            preferencias: this.preferenciasUsu,
+            tipoCampanha: this.tipoCampanhasUsu,
+            senha: this.storage.getPwd(),
+            ultimoLogin: this.dataAtual,
+            perfis: [2]
+        }
+        console.log(usuarioUpdate);
+        console.log(idUser);
+
+        this.usuarioService.updateUser(idUser, usuarioUpdate).subscribe(response => {
+          console.log("updated")
+        });
       })
     }
   }
@@ -76,23 +101,45 @@ export class InitPage {
         location.reload();
       }
       else{
-        this.updateCampanhas(filter, localUser.pref);
+        this.updateCampanhas(filter, localUser.tpCamps);
       }
     }
+    else {
+      let localUser;
+      this.updateCampanhas(filter, localUser);
+    }
     console.log('mudou: ' + filter);
-    //let localUser = this.storage.getLocalUser();
-    //console.log(localUser.email);
+
   }
 
-  updateCampanhas(filter, prefs) {
+  updateCampanhas(filter, tpCamps) {
+    let localUser = this.storage.getLocalUser();
     if(filter == 'preferencias') {
       this.campanhas = [];
-      this.campanhaService.findByPref(prefs[0]).subscribe(response => {
+      this.campanhaService.findByTypeAndDate(tpCamps[0], localUser.ultimoLogin).subscribe(response => {
         this.campanhas = response;        
       },
       error=>{});
-
     }
+    if(filter == 'recentes') {
+      this.campanhaService.findAll().subscribe(response => {
+
+        for(let i = 0; i < response.length; i++){
+
+  
+          response[i].dataInicio = this.formatData(response[i].dataInicio); 
+          response[i].dataFim = this.formatData(response[i].dataFim); 
+  
+          this.campanhas.push(response[i]);
+        }
+      },
+      error => {});
+    }
+  }
+
+  formatData(data){
+    let dataEnt = data.split('-');
+    return dataEnt[2]+'/'+dataEnt[1]+'/'+dataEnt[0];
   }
 
 }

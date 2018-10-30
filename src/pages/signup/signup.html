@@ -56,12 +56,37 @@
       </ion-select>
     </ion-item>
     <button ion-button block type="button" (click)='adicionarPreferencia()' >Adicionar Preferencia</button>
+    
     <ion-item>
       <ion-list>
         <button ion-item *ngFor="let item of preferenciasListaDesc"> {{ item }}
         </button>  
       </ion-list>    
     </ion-item>
+
+    <ion-list>
+      <ion-item-sliding *ngFor="let item of preferenciasListaDesc">
+        <ion-item>
+            {{ item }}
+        </ion-item>
+        <ion-item-options>
+          <button danger> remove
+
+          </button>
+        </ion-item-options>
+
+      </ion-item-sliding>
+    </ion-list>
+
+    <ion-item>
+      <ion-list>
+        <ion-item>
+          <label  *ngFor="let item of preferenciasListaDesc"> {{ item }} </label>
+          <button danger ion-button color="red" item-end>Remove</button>
+        </ion-item>
+      </ion-list>
+    </ion-item>
+
 
     <button ion-button block type="submit" [disabled]="formGroup.invalid">Cadastrar</button>
   </form>

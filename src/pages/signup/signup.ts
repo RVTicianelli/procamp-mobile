@@ -64,7 +64,9 @@ export class SignupPage {
       'sexo': this.formGroup.value.sexo,
       'email': this.formGroup.value.email,
       'preferencias': this.formGroup.value.preferencias,
-      'senha': this.formGroup.value.senha
+      'senha': this.formGroup.value.senha,
+      'tipoCampanha': [],
+      'ultimoLogin':""
     }
 
     console.log(this.usuario);

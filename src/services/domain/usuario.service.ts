@@ -25,4 +25,16 @@ export class UsuarioService {
             }
         );
     }
+
+    updateUser(id, obj: UsuarioDTO) {
+        console.log(obj);
+        return this.http.put(
+            `${API_CONFIG.baseUrl}/usuario/update/${id}`,
+            obj,
+            {
+                observe: 'response',
+                responseType: 'text'
+            }            
+        );
+    }
 }

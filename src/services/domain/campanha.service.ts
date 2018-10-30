@@ -24,4 +24,8 @@ export class CampanhaService {
     findByPref(pref) : Observable<CampanhaDTO[]> {
         return this.http.get<CampanhaDTO[]>(`${API_CONFIG.baseUrl}/campanha/buscacampanha/preferencias/${pref}`);
     }
+
+    findByTypeAndDate(tpCamp, date) : Observable<CampanhaDTO[]> {
+        return this.http.get<CampanhaDTO[]>(`${API_CONFIG.baseUrl}/campanha/buscacampanha/novas/tipocampanha/${tpCamp}/${date}`);
+    }
 }
