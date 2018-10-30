@@ -15,6 +15,7 @@ import { UsuarioDTO } from '../../models/usuario.dto';
 export class InitPage {
 
   campanhas: CampanhaDTO[] = [];
+  campanhasNovas: CampanhaDTO[] = [];
   preferenciasUsu: string[] = [];
   tipoCampanhasUsu: string[] = [];
   dataAtual: string = new Date().toISOString().substring(0, 10);
@@ -40,8 +41,8 @@ export class InitPage {
     let idUser;
     if(localUser != null) {
       this.usuarioService.findByEmail(localUser.email).subscribe(response =>{
+        idUser= response["id"];
         for(let i = 0; i < (response.preferencias.length); i++) {
-          idUser= response["id"];
           this.preferenciasUsu.push(response.preferencias[i]["id"]);
         }
         for(let i = 0; i < (response.tipoCampanha.length); i++) {
@@ -71,12 +72,30 @@ export class InitPage {
             ultimoLogin: this.dataAtual,
             perfis: [2]
         }
-        console.log(usuarioUpdate);
-        console.log(idUser);
 
         this.usuarioService.updateUser(idUser, usuarioUpdate).subscribe(response => {
           console.log("updated")
         });
+
+        console.log('tipos de campanha');
+        console.log(this.tipoCampanhasUsu);
+
+        for(let i = 0; i < this.tipoCampanhasUsu.length; i ++) {
+          this.campanhaService.findByTypeAndDate(this.tipoCampanhasUsu[i], user.ultimoLogin).subscribe(response => {
+            console.log(response);
+            for(let x = 0; x < response.length; x++) {
+              console.log('respostas individuais');
+              console.log(response[x]);
+              this.campanhasNovas.push(response[x]);
+            }
+            console.log('dentro for');
+            console.log(this.campanhasNovas);
+          },
+          error=>{});
+        }
+        console.log('fora for');
+        console.log(this.campanhasNovas);
+
       })
     }
   }
@@ -108,7 +127,6 @@ export class InitPage {
       let localUser;
       this.updateCampanhas(filter, localUser);
     }
-    console.log('mudou: ' + filter);
 
   }
 

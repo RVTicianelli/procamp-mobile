@@ -66,7 +66,8 @@ export class SignupPage {
       'preferencias': this.formGroup.value.preferencias,
       'senha': this.formGroup.value.senha,
       'tipoCampanha': [],
-      'ultimoLogin':""
+      'ultimoLogin':"",
+      'perfis':[2]
     }
 
     console.log(this.usuario);

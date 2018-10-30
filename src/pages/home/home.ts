@@ -29,12 +29,10 @@ export class HomePage {
   }
 
   login() {
-    console.log(this.creds.senha);
     this.storage.setPwd(this.creds.senha);
-    
+
     this.auth.authenticate(this.creds)
       .subscribe(response => {
-        console.log(response.headers.get('Authorization'));
         this.auth.successfulLogin(response.headers.get('Authorization'));
         this.app.getMenuOptions();
         this.navCtrl.setRoot('InitPage');

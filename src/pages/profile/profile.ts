@@ -22,7 +22,7 @@ export class ProfilePage {
     senha: "",
     tipoCampanha: [""],
     ultimoLogin:"",
-    perfis:[""]
+    perfis:[2]
   }
 
   formGroup: FormGroup;
