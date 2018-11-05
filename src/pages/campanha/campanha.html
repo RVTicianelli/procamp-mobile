@@ -20,6 +20,9 @@
     <p text-left>Preferencias: </p>
     <ion-item *ngFor="let pref of preferencias">
       <p>{{ pref["nome"]}}</p>    
-  </ion-item>
+    </ion-item>
+
+    <button ion-button (click)='geraMapa()'>Abrir Localidades</button>
+
 
 </ion-content>

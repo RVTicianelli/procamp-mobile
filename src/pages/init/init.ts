@@ -74,28 +74,17 @@ export class InitPage {
         }
 
         this.usuarioService.updateUser(idUser, usuarioUpdate).subscribe(response => {
-          console.log("updated")
+          console.log("updated");
         });
-
-        console.log('tipos de campanha');
-        console.log(this.tipoCampanhasUsu);
 
         for(let i = 0; i < this.tipoCampanhasUsu.length; i ++) {
           this.campanhaService.findByTypeAndDate(this.tipoCampanhasUsu[i], user.ultimoLogin).subscribe(response => {
-            console.log(response);
             for(let x = 0; x < response.length; x++) {
-              console.log('respostas individuais');
-              console.log(response[x]);
               this.campanhasNovas.push(response[x]);
             }
-            console.log('dentro for');
-            console.log(this.campanhasNovas);
           },
           error=>{});
         }
-        console.log('fora for');
-        console.log(this.campanhasNovas);
-
       })
     }
   }

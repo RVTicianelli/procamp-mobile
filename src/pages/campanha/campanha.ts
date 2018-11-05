@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { CampanhaDTO } from '../../models/campanha';
 import { CampanhaService } from '../../services/domain/campanha.service';
+import { MapaReq } from '../../models/mapaReq';
+import { MapaService } from '../../services/domain/mapa.service';
 
 @IonicPage()
 @Component({
@@ -14,8 +16,11 @@ export class CampanhaPage {
   localidades: String[];
   preferencias: String[];
   resp = [];
+  enderecosCampanha: String[] = [];
+  listaEnderecos: MapaReq;
+  listaRetorno: MapaReq;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public campanhaService: CampanhaService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public campanhaService: CampanhaService, public mapaService: MapaService) {
   }
 
   ionViewDidLoad() {
@@ -47,8 +52,32 @@ export class CampanhaPage {
       }
       
       this.campanha = response;
+
+      console.log(this.campanha);
     },
   error => {});
+  }
+
+  geraMapa(){
+    for( let i = 0; i < this.campanha.localidades.length; i++){
+      let numero = this.campanha.localidades[i]['numero']
+      let endereco = this.campanha.localidades[i]['cep']['nomeRua'];
+      let uf = this.campanha.localidades[i]['cep']['cidade']['estado']['uf'];
+      let replaced = endereco.split(' ').join('+');
+
+      this.enderecosCampanha.push(numero+'+'+replaced+'+'+uf);
+    }
+    this.listaEnderecos = {
+      "listaEnderecos": this.enderecosCampanha
+    }
+
+    console.log(this.listaEnderecos);
+
+    this.mapaService.geraMapa(this.listaEnderecos)
+      .subscribe(response => {
+        this.navCtrl.push("MapPage", {list: response});
+      })
+    console.log('botao');
   }
 
 }
