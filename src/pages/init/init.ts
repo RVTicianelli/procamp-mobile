@@ -16,7 +16,6 @@ export class InitPage {
 
   campanhas: CampanhaDTO[] = [];
   campanhasNovas: CampanhaDTO[] = [];
-  preferenciasUsu: string[] = [];
   tipoCampanhasUsu: string[] = [];
   dataAtual: string = new Date().toISOString().substring(0, 10);
 
@@ -42,9 +41,6 @@ export class InitPage {
     if(localUser != null) {
       this.usuarioService.findByEmail(localUser.email).subscribe(response =>{
         idUser= response["id"];
-        for(let i = 0; i < (response.preferencias.length); i++) {
-          this.preferenciasUsu.push(response.preferencias[i]["id"]);
-        }
         for(let i = 0; i < (response.tipoCampanha.length); i++) {
           this.tipoCampanhasUsu.push(response.tipoCampanha[i]["id"]);
         }
@@ -52,7 +48,6 @@ export class InitPage {
         let user : LocalUser = {
           token: localUser.token,
           email: localUser.email,
-          pref: this.preferenciasUsu,
           tpCamps: this.tipoCampanhasUsu,
           ultimoLogin: response.ultimoLogin,
           perfis: [2]
@@ -66,7 +61,6 @@ export class InitPage {
             cpf: response.cpf,
             sexo: response.sexo,
             email: response.email,
-            preferencias: this.preferenciasUsu,
             tipoCampanha: this.tipoCampanhasUsu,
             senha: this.storage.getPwd(),
             ultimoLogin: this.dataAtual,
@@ -94,7 +88,7 @@ export class InitPage {
   }
 
   changeFilter(filter) {
-    if(filter == 'preferencias'){
+    if(filter == 'novas'){
       let localUser = this.storage.getLocalUser();
       if(localUser == null) {
         let alert = this.alertCrtl.create({
@@ -121,7 +115,7 @@ export class InitPage {
 
   updateCampanhas(filter, tpCamps) {
     let localUser = this.storage.getLocalUser();
-    if(filter == 'preferencias') {
+    if(filter == 'novas') {
       this.campanhas = [];
       this.campanhaService.findByTypeAndDate(tpCamps[0], localUser.ultimoLogin).subscribe(response => {
         this.campanhas = response;        
@@ -129,14 +123,12 @@ export class InitPage {
       error=>{});
     }
     if(filter == 'recentes') {
+      this.campanhas = [];
       this.campanhaService.findAll().subscribe(response => {
 
-        for(let i = 0; i < response.length; i++){
-
-  
+        for(let i = 0; i < response.length; i++){  
           response[i].dataInicio = this.formatData(response[i].dataInicio); 
           response[i].dataFim = this.formatData(response[i].dataFim); 
-  
           this.campanhas.push(response[i]);
         }
       },

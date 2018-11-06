@@ -8,4 +8,4 @@ export interface CampanhaDTO {
     descricao: String;
     localidades: String[];
     preferencias: String[];
-}1
+}

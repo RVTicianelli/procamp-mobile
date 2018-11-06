@@ -14,6 +14,7 @@ import { StorageService } from '../services/storage.service';
 import { UsuarioService } from '../services/domain/usuario.service';
 import { AuthInterceptorProvider } from '../interceptors/auth-interceptor';
 import { MapaService } from '../services/domain/mapa.service';
+import { TipoCampanhaService } from '../services/domain/tipoCampanha.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { MapaService } from '../services/domain/mapa.service';
     AuthService,
     StorageService,
     UsuarioService,
-    MapaService
+    MapaService,
+    TipoCampanhaService
   ]
 })
 export class AppModule {}

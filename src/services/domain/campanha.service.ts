@@ -6,9 +6,6 @@ import { Observable } from "rxjs/Rx";
 
 @Injectable()
 export class CampanhaService {
-
-    camps: CampanhaDTO[] = [];
-
     constructor(public http: HttpClient) {
         
     }

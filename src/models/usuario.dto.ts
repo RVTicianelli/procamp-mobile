@@ -4,7 +4,6 @@ export interface UsuarioDTO {
 	cpf: String;
 	sexo: String;
 	email: String;
-	preferencias: String[];
 	tipoCampanha: String[];
 	senha: String;
 	ultimoLogin: string;

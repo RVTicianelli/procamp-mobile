@@ -8,6 +8,8 @@ import { UsuarioDTO } from '../../models/usuario.dto';
 import { CredenciaisDTO } from '../../models/credenciais.dto';
 import { MyApp } from '../../app/app.component';
 import { AuthService } from '../../services/auth.service';
+import { TipoCampanha } from '../../models/tipoCampanha';
+import { TipoCampanhaService } from '../../services/domain/tipoCampanha.service';
 
 @IonicPage()
 @Component({
@@ -17,11 +19,12 @@ import { AuthService } from '../../services/auth.service';
 export class SignupPage {
 
   formGroup: FormGroup;
-  preferencias: PreferenciasDTO[];
-  preferenciasListadas: PreferenciasDTO[];
   usuario: UsuarioDTO;
-  preferenciasListaId = [];
-  preferenciasListaDesc = [];
+  tpCampanhas: TipoCampanha[];
+  tpCampanhasUsu: TipoCampanha[];
+  tpCampanhaListaId = [];
+  tpCampanhaListaDesc = [];
+  tpCampanhasListadas = [];
 
   creds : CredenciaisDTO = {
     email: "",
@@ -31,7 +34,7 @@ export class SignupPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, 
               public formBuilder: FormBuilder, public preferenciasService: PreferenciasService, 
               public usuarioService: UsuarioService, public alertCrtl: AlertController, 
-              public app: MyApp, public auth: AuthService) {
+              public app: MyApp, public auth: AuthService, public tipoCampanhaService: TipoCampanhaService) {
 
     this.formGroup = this.formBuilder.group({
       nome: ['nometeste', [Validators.required, Validators.minLength(5), Validators.maxLength(120)]],
@@ -40,43 +43,46 @@ export class SignupPage {
       sexo:['M', [Validators.required]],
       email:['email3', [Validators.required]],
       senha:['123', [Validators.required]],
-      preferenciaId:[''],
-      preferencias: ['']
+      tpCamapnhaId:['']
     })
 
     
   }
 
   ionViewDidLoad() {
-    this.preferenciasService.findAll()
-    .subscribe(response => {
-      this.preferencias=response;
-      this.formGroup.controls.preferenciaId.setValue(this.preferencias[0].id);
-    },
-    error => {});
+    this.tipoCampanhaService.findAll()
+      .subscribe(response => {
+        this.tpCampanhas = response;
+        console.log(this.tpCampanhas);
+      },
+      error => {});
   }
 
   signupUser(){
-    this.usuario = {
-      'nome': this.formGroup.value.nome,
-      'dataNascimento': this.formGroup.value.dtNascimento,
-      'cpf': this.formGroup.value.cpf,
-      'sexo': this.formGroup.value.sexo,
-      'email': this.formGroup.value.email,
-      'preferencias': this.formGroup.value.preferencias,
-      'senha': this.formGroup.value.senha,
-      'tipoCampanha': [],
-      'ultimoLogin':"",
-      'perfis':[2]
+    if(this.tpCampanhaListaId.length == 0){
+      this.showErroTipoCampanha();
     }
-
-    console.log(this.usuario);
-
-    this.usuarioService.insert(this.usuario)
-    .subscribe(response => {
-      this.showInsertOk();
-    },
-    error => {});
+    else {
+      this.usuario = {
+        'nome': this.formGroup.value.nome,
+        'dataNascimento': this.formGroup.value.dtNascimento,
+        'cpf': this.formGroup.value.cpf,
+        'sexo': this.formGroup.value.sexo,
+        'email': this.formGroup.value.email,
+        'senha': this.formGroup.value.senha,
+        'tipoCampanha': this.tpCampanhaListaId,
+        'ultimoLogin':"0001-01-01",
+        'perfis':[2]
+      }
+  
+      console.log(this.usuario);
+  
+      this.usuarioService.insert(this.usuario)
+      .subscribe(response => {
+        this.showInsertOk();
+      },
+      error => {});
+    }
   }
 
   showInsertOk() {
@@ -102,11 +108,50 @@ export class SignupPage {
     alert.present();
   }
 
+  showErroTipoCampanha() {
+    let alert = this.alertCrtl.create({
+      title: 'Erro',
+      message:'Você deve escolher um tipo de campanha para fazer o cadastro.',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text:'ok'
+        }
+      ]
+    });
+    alert.present();
+  }
+
   async adicionarPreferencia(){
+    if(this.tpCampanhaListaId.indexOf(this.formGroup.value.tpCamapnhaId["id"]) == -1) {
+      console.log('não tem');
+      this.tpCampanhaListaId.push(this.formGroup.value.tpCamapnhaId["id"]);
+      this.tpCampanhaListaDesc.push(this.formGroup.value.tpCamapnhaId["descricao"]);
+    }
+    else {
+      console.log("ja tem");
+    }
+    console.log(this.tpCampanhaListaId);
+    console.log(this.tpCampanhaListaDesc);
+    /*
     if(this.preferenciasListaId.indexOf(this.formGroup.value.preferenciaId["id"]) == -1 ) {
       this.preferenciasListaId.push(this.formGroup.value.preferenciaId["id"]);
       this.preferenciasListaDesc.push(this.formGroup.value.preferenciaId["nome"]);
       this.formGroup.value.preferencias = this.preferenciasListaId;
+    }*/
+
+  }
+
+  apagar(descCampanha){
+    console.log('apagar');
+    console.log(descCampanha);
+    let index = this.tpCampanhaListaDesc.indexOf(descCampanha);
+
+    if(index > -1) {
+      this.tpCampanhaListaDesc.splice(index, 1);
+      this.tpCampanhaListaId.splice(index,1);
     }
+    console.log(this.tpCampanhaListaDesc);
+    console.log(this.tpCampanhaListaId);
   }
 }

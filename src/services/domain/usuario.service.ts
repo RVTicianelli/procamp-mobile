@@ -37,4 +37,15 @@ export class UsuarioService {
             }            
         );
     }
+
+    removeUser(id) {
+        console.log('entrou p apagar');
+        return this.http.delete(
+            `${API_CONFIG.baseUrl}/usuario/delete/${id}`,
+            {
+                observe: 'response',
+                responseType: 'text'
+            }
+        )
+    }
 }

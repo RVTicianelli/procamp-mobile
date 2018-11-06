@@ -8,7 +8,8 @@
 
 
 <ion-content padding>
-  <form [formGroup]="formGroup" (ngSubmit)="signupUser(); $event.preventDefault()">
+  <form [formGroup]="formGroup" >
+  <!--<form [formGroup]="formGroup">-->
     <ion-item>
       <ion-label stacked>Nome*</ion-label>
       <ion-input formControlName="nome" type="text"></ion-input>
@@ -50,45 +51,24 @@
     </ion-item>
     <p class="danger" *ngIf="formGroup.controls['senha'].dirty && formGroup.controls['senha'].errors" margin-left>Valor inválido</p>
     <ion-item>
-      <ion-label stacked>Preferencias*</ion-label>
-      <ion-select formControlName="preferenciaId">
-        <ion-option *ngFor="let preferencia of preferencias" [value]="preferencia">{{preferencia.nome}}</ion-option>
+      <ion-label stacked>Tipos de campanhas favoritas*</ion-label>
+      <ion-select formControlName="tpCamapnhaId">
+        <ion-option *ngFor="let item of tpCampanhas" [value]="item">{{item.descricao}}</ion-option>
       </ion-select>
     </ion-item>
     <button ion-button block type="button" (click)='adicionarPreferencia()' >Adicionar Preferencia</button>
-    
-    <ion-item>
-      <ion-list>
-        <button ion-item *ngFor="let item of preferenciasListaDesc"> {{ item }}
-        </button>  
-      </ion-list>    
-    </ion-item>
-
-    <ion-list>
-      <ion-item-sliding *ngFor="let item of preferenciasListaDesc">
-        <ion-item>
-            {{ item }}
-        </ion-item>
-        <ion-item-options>
-          <button danger> remove
-
-          </button>
-        </ion-item-options>
-
-      </ion-item-sliding>
-    </ion-list>
 
     <ion-item>
       <ion-list>
-        <ion-item>
-          <label  *ngFor="let item of preferenciasListaDesc"> {{ item }} </label>
-          <button danger ion-button color="red" item-end>Remove</button>
+        <ion-item  *ngFor="let item of tpCampanhaListaDesc">
+          <label> {{item}} </label>
+          <button danger ion-button color="red" (click)="apagar(item)" item-end>Remove</button>
         </ion-item>
       </ion-list>
     </ion-item>
 
 
-    <button ion-button block type="submit" [disabled]="formGroup.invalid">Cadastrar</button>
+    <button ion-button block type="submit" (click)='signupUser()' [disabled]="formGroup.invalid">Cadastrar</button>
   </form>
 
 </ion-content>
