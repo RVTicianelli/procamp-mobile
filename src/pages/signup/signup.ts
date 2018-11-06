@@ -122,36 +122,19 @@ export class SignupPage {
     alert.present();
   }
 
-  async adicionarPreferencia(){
+  async adicionarTpLocalidade(){
     if(this.tpCampanhaListaId.indexOf(this.formGroup.value.tpCamapnhaId["id"]) == -1) {
-      console.log('não tem');
       this.tpCampanhaListaId.push(this.formGroup.value.tpCamapnhaId["id"]);
       this.tpCampanhaListaDesc.push(this.formGroup.value.tpCamapnhaId["descricao"]);
     }
-    else {
-      console.log("ja tem");
-    }
-    console.log(this.tpCampanhaListaId);
-    console.log(this.tpCampanhaListaDesc);
-    /*
-    if(this.preferenciasListaId.indexOf(this.formGroup.value.preferenciaId["id"]) == -1 ) {
-      this.preferenciasListaId.push(this.formGroup.value.preferenciaId["id"]);
-      this.preferenciasListaDesc.push(this.formGroup.value.preferenciaId["nome"]);
-      this.formGroup.value.preferencias = this.preferenciasListaId;
-    }*/
-
   }
 
   apagar(descCampanha){
-    console.log('apagar');
-    console.log(descCampanha);
     let index = this.tpCampanhaListaDesc.indexOf(descCampanha);
 
     if(index > -1) {
       this.tpCampanhaListaDesc.splice(index, 1);
       this.tpCampanhaListaId.splice(index,1);
     }
-    console.log(this.tpCampanhaListaDesc);
-    console.log(this.tpCampanhaListaId);
   }
 }

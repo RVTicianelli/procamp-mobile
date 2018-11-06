@@ -11,12 +11,6 @@
 
 
 <ion-content padding>
- <!-- <h2 text-center>{{usuario?.nome}}</h2>
-  <p text-center>{{usuario?.email}}</p>
-  <p text-center>{{usuario?.sexo}}</p>
-  <p text-center>{{usuario?.dataNascimento}}</p>
-  <p text-center>{{usuario?.cpf}}</p>
-   <form [formGroup]="formGroup">-->
     <ion-item>
         <ion-label stacked>Nome*</ion-label>
         <ion-input type="text" value="{{usuario?.nome}}" [(ngModel)] = "usuario.nome" ></ion-input>
@@ -53,20 +47,28 @@
       </ion-item>
     <ion-item>
         <ion-label stacked>Senha*</ion-label>
-        <ion-input type="password"></ion-input>
+        <ion-input type="password" [(ngModel)] = "novaSenha"></ion-input>
     </ion-item>
 
-    <!--<ion-item>
+    <ion-item>
+        <ion-label stacked>Tipos de campanhas favoritas*</ion-label>
+        <ion-select [(ngModel)] = "tipoCampanhaAdd">
+          <ion-option *ngFor="let itemAdd of tpCampanhas" [value]="itemAdd">{{itemAdd.descricao}}</ion-option>
+        </ion-select>
+    </ion-item>
+    <button ion-button block type="button" (click)='adicionarTpLocalidade()' >Adicionar Preferencia</button>
+    <ion-item>
         <ion-list>
-          <button ion-item *ngFor="let item of {{usuario?.preferencias}}"> {{ item.nome }}
-          </button>  
-        </ion-list>    
-      </ion-item>-->
+          <ion-item  *ngFor="let item of tpCampanhaListaDesc">
+            <label> {{item}} </label>
+            <button danger ion-button color="red" (click)="apagar(item)" item-end>Remove</button>
+          </ion-item>
+        </ion-list>
+    </ion-item>
 
-      <button ion-button block type="button"  (click)='mostra()' >Salvar</button>
+      <button ion-button block type="button"  (click)='salvarUsuario()' >Salvar</button>
 
 
-      <button ion-button block type="button" (click)='excluiUsuario()'>Excluir</button>
+      <button ion-button block type="button" (click)='excluiUsuario()' hidden>Excluir</button>
 
-  <!--</form>-->
 </ion-content>
