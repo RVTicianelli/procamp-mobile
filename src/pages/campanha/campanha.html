@@ -13,14 +13,6 @@
     <p text-left>Respnsável: {{campanha?.responsavel.nome}}</p> 
     <p text-left>Tipo da campanha: {{campanha?.tipoCampanha.descricao}}</p>
     <p text-left>Descricao: {{campanha?.descricao}}</p>
-    <p text-left>Localidades: </p>
-    <ion-item *ngFor="let loc of localidades">
-        <p>{{ loc["nome"]}}</p>    
-    </ion-item>
-    <p text-left>Preferencias: </p>
-    <ion-item *ngFor="let pref of preferencias">
-      <p>{{ pref["nome"]}}</p>    
-    </ion-item>
 
     <button ion-button (click)='geraMapa()'>Abrir Localidades</button>
 

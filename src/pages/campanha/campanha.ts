@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { CampanhaDTO } from '../../models/campanha';
 import { CampanhaService } from '../../services/domain/campanha.service';
 import { MapaReq } from '../../models/mapaReq';
@@ -20,7 +20,9 @@ export class CampanhaPage {
   listaEnderecos: MapaReq;
   listaRetorno: MapaReq;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public campanhaService: CampanhaService, public mapaService: MapaService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              public campanhaService: CampanhaService, public mapaService: MapaService,
+              public alertCrtl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -59,25 +61,41 @@ export class CampanhaPage {
   }
 
   geraMapa(){
-    for( let i = 0; i < this.campanha.localidades.length; i++){
-      let numero = this.campanha.localidades[i]['numero']
-      let endereco = this.campanha.localidades[i]['cep']['nomeRua'];
-      let uf = this.campanha.localidades[i]['cep']['cidade']['estado']['uf'];
-      let replaced = endereco.split(' ').join('+');
-
-      this.enderecosCampanha.push(numero+'+'+replaced+'+'+uf);
+    if( this.campanha.localidades.length == 0){
+      this.alertCampanhaSemLocalidade();
     }
-    this.listaEnderecos = {
-      "listaEnderecos": this.enderecosCampanha
+    else {
+      for( let i = 0; i < this.campanha.localidades.length; i++){
+        let numero = this.campanha.localidades[i]['numero']
+        let endereco = this.campanha.localidades[i]['cep']['nomeRua'];
+        let uf = this.campanha.localidades[i]['cep']['cidade']['estado']['uf'];
+        let replaced = endereco.split(' ').join('+');
+  
+        this.enderecosCampanha.push(numero+'+'+replaced+'+'+uf);
+      }
+      this.listaEnderecos = {
+        "listaEnderecos": this.enderecosCampanha
+      }
+    
+      this.mapaService.geraMapa(this.listaEnderecos)
+        .subscribe(response => {
+          this.navCtrl.push("MapPage", {list: response});
+        })
     }
+  }
 
-    console.log(this.listaEnderecos);
-
-    this.mapaService.geraMapa(this.listaEnderecos)
-      .subscribe(response => {
-        this.navCtrl.push("MapPage", {list: response});
-      })
-    console.log('botao');
+  alertCampanhaSemLocalidade(){
+    let alert = this.alertCrtl.create({
+      title: 'Erro ao abrir o mapa.',
+      message: 'A campanha não está vinculada a nenhuma localidade',
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text:'ok',
+        }
+      ]
+    });
+    alert.present();
   }
 
 }
