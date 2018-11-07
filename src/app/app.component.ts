@@ -40,7 +40,6 @@ export class MyApp {
   }
 
   getMenuOptions(){
-    console.log('carregou as opcoes');
     if (localStorage.getItem(STORAGE_KEYS.localUser) == null){
       this.pages = [
         { title: 'Inicio', component: 'InitPage' },

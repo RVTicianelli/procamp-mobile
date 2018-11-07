@@ -17,7 +17,6 @@ export class MapPage {
 
   ionViewDidLoad() {
     let lista = this.navParams.get("list");
-    console.log(lista);
     this.initMap(lista);
   }
   

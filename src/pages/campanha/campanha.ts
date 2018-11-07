@@ -54,8 +54,6 @@ export class CampanhaPage {
       }
       
       this.campanha = response;
-
-      console.log(this.campanha);
     },
   error => {});
   }

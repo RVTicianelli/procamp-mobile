@@ -27,7 +27,6 @@ export class UsuarioService {
     }
 
     updateUser(id, obj: UsuarioDTO) {
-        console.log(obj);
         return this.http.put(
             `${API_CONFIG.baseUrl}/usuario/update/${id}`,
             obj,
@@ -39,7 +38,6 @@ export class UsuarioService {
     }
 
     removeUser(id) {
-        console.log('entrou p apagar');
         return this.http.delete(
             `${API_CONFIG.baseUrl}/usuario/delete/${id}`,
             {

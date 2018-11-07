@@ -53,7 +53,6 @@ export class SignupPage {
     this.tipoCampanhaService.findAll()
       .subscribe(response => {
         this.tpCampanhas = response;
-        console.log(this.tpCampanhas);
       },
       error => {});
   }
@@ -74,9 +73,7 @@ export class SignupPage {
         'ultimoLogin':"0001-01-01",
         'perfis':[2]
       }
-  
-      console.log(this.usuario);
-  
+    
       this.usuarioService.insert(this.usuario)
       .subscribe(response => {
         this.showInsertOk();
@@ -96,7 +93,6 @@ export class SignupPage {
           handler: () => {
             this.auth.authenticate(this.creds)
             .subscribe(response => {
-              console.log(response.headers.get('Authorization'));
               this.auth.successfulLogin(response.headers.get('Authorization'));
               this.app.getMenuOptions();
               this.navCtrl.setRoot('InitPage');

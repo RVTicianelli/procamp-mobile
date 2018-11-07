@@ -68,7 +68,7 @@ export class InitPage {
         }
 
         this.usuarioService.updateUser(idUser, usuarioUpdate).subscribe(response => {
-          console.log("updated");
+
         });
 
         for(let i = 0; i < this.tipoCampanhasUsu.length; i ++) {

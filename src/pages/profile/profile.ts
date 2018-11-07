@@ -46,7 +46,6 @@ export class ProfilePage {
     this.tipoCampanhaService.findAll()
       .subscribe(response => {
         this.tpCampanhas = response;
-        console.log(this.tpCampanhas);
       },
       error => {}
     );
@@ -55,7 +54,6 @@ export class ProfilePage {
     if (localUser && localUser.email) {
       this.usuarioService.findByEmail(localUser.email)
       .subscribe(response => {
-        console.log(response);
         this.userId =response["id"];
         this.usuario = response;
         for(let i = 0; i < response["tipoCampanha"].length; i++) {
@@ -94,7 +92,6 @@ export class ProfilePage {
       ultimoLogin: this.usuario.ultimoLogin,
       perfis: [2]
     }
-    console.log(this.usuarionew);
     this.usuarioService.updateUser(this.userId, this.usuarionew)
       .subscribe(response =>{
         this.mensagemAtualizaUsu();
@@ -102,18 +99,12 @@ export class ProfilePage {
         this.navCtrl.setRoot('HomePage');
       },
       error => {});
-    //console.log(this.usuario.nome);
   }
 
   excluiUsuario(){ 
-    console.log('exclui');
-    console.log(this.userId);
-    console.log(this.usuario);
     this.usuario.tipoCampanha = [];
-    console.log(this.usuario);
     this.usuarioService.updateUser(this.userId, this.usuario)
       .subscribe(response =>{
-        console.log('atu');
         this.usuarioService.removeUser(this.userId)
         .subscribe(response => {
           this.mensagemDeletaUsu();
